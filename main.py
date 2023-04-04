@@ -14,16 +14,20 @@ score = 0
 states = []
 game = True
 while game:
-    answer_state = screen.textinput(title="Guess the state", prompt="Name a state: ")
+    answer_state = screen.textinput(title="Guess the state", prompt="Name a state: ").title()
     if answer_state in data.values:
-        states.append(answer_state)
-        score += 1
-        index = data.index[data.state == answer_state].tolist()
-        for i in index:
-            x = data._get_value(i, "x")
-            y = data._get_value(i, "y")
-        commands.go(x, y)
-        commands.writ(answer_state)
+        if len(states) == 50:
+            commands.win()
+            game = False
+        else:
+            states.append(answer_state)
+            score += 1
+            index = data.index[data.state == answer_state].tolist()
+            for i in index:
+                x = data._get_value(i, "x")
+                y = data._get_value(i, "y")
+            commands.go(x, y)
+            commands.writ(answer_state)
     else:
         commands.clear()
         commands.game_over(score)
